@@ -1,0 +1,42 @@
+const discord = require('discord.js')
+const { Database } = require("quickmongo");
+const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.net/790504650909417482");
+const Error = require('../../error.json'); const ErrorTitle400 = Error.error400.title; const ErrorDesc400 = Error.error400.description; const ErrorEmbed400 = new discord.MessageEmbed().setTitle(ErrorTitle400).setDescription(ErrorDesc400); const ErrorTitle411 = Error.error411.title; const ErrorDesc411 = `Please give a string you want to name all the users\nEx.:\`\`\`!username {user} | {user.discriminator}\`\`\`\nResult:\n**Lou **`; const ErrorEmbed411 = new discord.MessageEmbed().setTitle(ErrorTitle411).setDescription(ErrorDesc411);
+
+module.exports = {
+    name: "username",
+    description: "test",
+    category: "test",
+    usage: "!username <username here>",
+    run: async (client, message, args) => {
+        // If the message.author doesn't has the required Permission
+        if (!message.member.hasPermission('MANAGE_NICKNAMES')) {
+            message.channel.send(ErrorEmbed400)
+        }
+        // If he/she has the Permission
+        else if (message.member.hasPermission('MANAGE_NICKNAMES')) {
+            if (!args[0]) {
+                message.channel.send(ErrorEmbed411)
+            }
+            else if (args[0]) {
+                let x = args.slice(0).join(" ")
+                if (x.size) {
+                    message.channel.send(x.size)
+                }
+            }
+        }
+    }
+}
+
+/*
+                message.guild.members.cache.forEach(member => { 
+                    let x = args.slice(0).join(" ")
+                    let y = x.replace('{user}', member.user.username)
+                    member.setNickname(y).catch((err) => {
+                        const A = new discord.MessageEmbed()
+                            .setTitle('An Error Occurred!')
+                            .setDescription(`\`\`\`${err}\`\`\`Cannot change username of ${member.user.username}`)
+                        message.channel.send(A)
+                    })
+                })
+*/
