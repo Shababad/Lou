@@ -62,9 +62,9 @@ client.once("ready", async () => {
         stats.addRow("Guilds", client.guilds.cache.size)
         stats.addRow("Members", client.users.cache.size)
         stats.addRow("Version", version)
-        console.log(stats.toString())
-    console.log(client.readyTime)
 
+    console.log(stats.toString())
+    console.log(client.readyTime)
     console.log(`Logged in as ${client.user.tag}!`);
 
     const channel = await client.channels.cache.get('792786693014421564')
@@ -74,8 +74,7 @@ client.once("ready", async () => {
         .setTimestamp()
         .setDescription(`Sucessfully loaded ${client.commands.size} commands\nThis is the ${restartvalue} time this bot has been turned on`)
         .addFields({name: "Total Guilds:", value: client.guilds.cache.size}, {name: "Total Emojis:", value: client.emojis.cache.size}, {name: "Total Members:", value: client.users.cache.size})
-
-      .setFooter('Lou Bot Logging', 'https://static.wikia.nocookie.net/brawlstars/images/0/0b/Lou_Portrait.png/revision/latest/scale-to-width-down/340?cb=20201111223555')
+        .setFooter('Lou Bot Logging', 'https://static.wikia.nocookie.net/brawlstars/images/0/0b/Lou_Portrait.png/revision/latest/scale-to-width-down/340?cb=20201111223555')
     channel.send(A)
 });
 
@@ -104,6 +103,7 @@ client.on("message", async (message) => {
 
     if (cmd.length === 0) return;
     let command = client.commands.get(cmd);
+    if (command) {db.add(`${message.author.id}.totalcommands`, 1)}
     if (!command) command = client.commands.get(client.aliases.get(cmd));
     if (command) command.run(client, message, args);
 });
