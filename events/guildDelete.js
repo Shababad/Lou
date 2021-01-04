@@ -7,7 +7,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 module.exports = (client, guild) => {
     let channel = client.channels.cache.get('793124130220146698')
     const A = new discord.MessageEmbed()
-        .setTitle('I joined a new server!')
+        .setTitle('I left a new server!')
         .setThumbnail(guild.iconURL())
         .addFields(
             {name: 'Name', value: `\`${guild.name}\``, inline: true},
@@ -16,7 +16,6 @@ module.exports = (client, guild) => {
             {name: 'Members', value: `\`${guild.memberCount}\``, inline: true},
             {name: 'Owner', value: `<@${guild.owner.id}>`, inline: true},
             {name: 'Total Guilds', value: `\`${client.guilds.cache.size}\``, inline: true},
-            {name: 'CreatedAt', value: `\`${guild.createdAt}\``, inline: true}
         )
         .setTimestamp()
         .setFooter('Lou Bot Logging', 'https://static.wikia.nocookie.net/brawlstars/images/0/0b/Lou_Portrait.png/revision/latest/scale-to-width-down/340?cb=20201111223555')
