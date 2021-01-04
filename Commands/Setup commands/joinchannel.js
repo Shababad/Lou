@@ -8,9 +8,8 @@ module.exports = {
     category: "Setup Commands",
     usage: "!joinchannel set <#channel>",
     run: async (client, message, args) => {
-        // Prefix Variable for the message.guild's Preifx, use ${p}
+        
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
-        // If the message.author deos not has the required permission
         if (!message.member.hasPermission('MANAGE_CHANNELS')) {
             const A = new discord.MessageEmbed()
                 .setTitle('400 Bad Request')
@@ -22,7 +21,6 @@ module.exports = {
         else {
         
             const JoinChannel = await db.get(`${message.guild.id}.joinchannel`)
-            // If no argument 0 provided, ex: "!joinchannel"
             if (!args[0]) {
                 if (JoinChannel == null) {
                     var chx = message.guild.channels.cache.filter(chx => chx.type === "text").find(x => x.position === 0);

@@ -3,12 +3,43 @@ const { Database } = require("quickmongo");
 const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.net/790504650909417482");
 
 module.exports = {
-    name: "setjoinmessage",
+    name: "joinmessage",
     description: "Set a join message for a server",
     category: "Setup Command",
-    usage: "!setjoinmessage <description/title/thumbnail...> <Text here>",
+    usage: "!joinmessage settitle <Text here>",
     run: async (client, message, args) => {
-
+        const JMTitles = await db.get(`${message.guild.id}.jm_title`)
+        let JMTitle;if (JMTitles == null) {JMTitle = "None";} else {JMTitle = JMTitles;}
+        const JMDescs = await db.get(`${message.guild.id}.jm_desc`)
+        let JMDesc;if (JMDescs == null) {JMDesc = "None";} else {JMDesc = JMDescs;}
+        const JMColors = await db.get(`${message.guild.id}.jm_color`)
+        let JMColor;if (JMColors == null) {JMColor = "None";} else {JMColor = Color;}
+        let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
+        if (!message.member.hasPermission('MANAGE_GUILD')) {
+            const A = new discord.MessageEmbed()
+                .setTitle('400 Bad Request')
+                .setDescription('You don\'t have the required permission to use this command')
+                message.delete()
+            const SendA = await message.channel.send(A)
+            .then(setTimeout(() => { SendA.delete() }, 10000))
+        } else {
+            if (!args[0]) {
+                const A = new discord.MessageEmbed()
+                    .setTitle(`Join Message`)
+                    .setDescription(`To edit the embed, use this command:\n\`\`\`${p}joinmessage <SetDesc/SetTitle...> <Message here>\`\`\`\nTo see the preview. use this command:\`\`\`${p}joinmessage preview\`\`\``)
+                    .addFields(
+                        {name: 'Title:', value: JMTitle},
+                        {name: 'Description:', value: JMDesc},
+                        {name: 'Color:', value: JMColor}
+                    )
+                message.delete()
+                const SendA = await message.channel.send(A)
+                .then(setTimeout(() => { SendA.delete() }, 10000))
+            }
+        }
+    }
+}
+/*
         const joinchannel = await db.get(`${message.guild.id}.joinchannel`)
         // If Join messages are disabled
         if (joinchannel == null) {
@@ -63,6 +94,5 @@ module.exports = {
                     }
                 }
             }
-        }
-    }
-}
+            
+        }*/
