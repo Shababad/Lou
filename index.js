@@ -47,6 +47,10 @@ fs.readdir("./events/", (err, files) => {
 
 client.once("ready", async () => {
 
+    client.api.applications(client.user.id).guilds('guild id').commands.post({data: {
+        name: 'ping',
+        description: 'ping pong!'
+    }})
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
@@ -93,8 +97,8 @@ client.on("message", async (message) => {
     }
 
     if (message.author.bot) return;
-    if (!message.guild)
-    if (!message.content.startsWith(prefix)) return;
+    if (!message.guild) return;
+    if (message.content.startsWith(prefix)) {
 
     if (!message.member)
         message.member = await message.guild.fetchMember(message);
@@ -105,17 +109,9 @@ client.on("message", async (message) => {
     let command = client.commands.get(cmd);
     if (!command) command = client.commands.get(client.aliases.get(cmd));
     if (command) command.run(client, message, args);
+ }
 });
 
-client.on('guildMemberAdd', async (member) => {
-    const joinchannel = await db.get(`${member.guild.id}.joinchannel`)
-    if (joinchannel == null) {
-        return;
-    }
-    else if (joinchannel !== null) {
-        
-    }
-})
 
 client.login(token);
 
