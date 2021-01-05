@@ -8,7 +8,6 @@ module.exports = {
     category: "Setup Commands",
     usage: "!joinchannel set <#channel>",
     run: async (client, message, args) => {
-        
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
         if (!message.member.hasPermission('MANAGE_CHANNELS')) {
             const A = new discord.MessageEmbed()
