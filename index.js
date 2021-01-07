@@ -103,7 +103,17 @@ client.on("message", async (message) => {
     }
     if (message.mentions.users.has('790504650909417482')) {
         const A = new discord.MessageEmbed()
-            .setTitle
+            .setTitle('Uncle Lou is here for you!')
+            .setDescription(`Here are some informations that may help you out!`)
+            .addFields(
+                {name: "**bot & server stats:**", value: `*Here are some improtant infos you should know*`, inline: false},
+                {name: "local prefix:", value: `\`${prefix}\``, inline: true},
+                {name: "guilds:", value: `\`${client.guilds.cache.size}\``, inline: true},
+                {name: "members:", value: `\`${client.members.cache.size}\``, inline: true},
+                {name: "**Useful commands:**", value: `*Here are some useful commands you should know*`, inline: false},
+                {name: `\`${prefix}help\``, value: "Get a list of all commands"},
+                {name: `\`${prefix}support\``, value: "Get contact to the Lou HQ"}
+            )
         message.channel.send(`prefix in this server is ${prefix}`)
     }
 
