@@ -28,7 +28,7 @@ module.exports = {
             if (!args[0]) {
                 const A = new discord.MessageEmbed()
                     .setTitle('Prefix')
-                    .setDescription(`The current prefix in ${message.guild.name} is **${p}**`)
+                    .setDescription(`The current prefix in ${message.guild.name} is **${p}**\n\`\`\`${p}prefix set <prefix>\`\`\``)
                 message.delete()
                 const SendA = await message.channel.send(A)
                 .then(setTimeout(() => { SendA.delete() }, 10000))
@@ -115,32 +115,6 @@ module.exports = {
                                 return;
                             }
                         });
-                    }
-                }
-            }
-            else if (args[0] == "add") {
-                if (!args[1]) {
-                    const A = new discord.MessageEmbed()
-                        .setTitle('411 Length Required')
-                        .setDescription(`No argument provided\n\`\`\`${p}prefix add <prefix>\`\`\``)
-                    const SendA = await message.channel.send(A)
-                    message.delete()
-                    .then(setTimeout(() => { SendA.delete() }, 10000))
-                }
-                else {
-                    if (args[1].length >= 5) {
-                        const A = new discord.MessageEmbed()
-                            .setTitle('406 Not Acceptable')
-                            .setDescription(`Provided prefix too long, max. **4** characters!\nExample: \`\`\`!prefix add -\`\`\``)
-                        const SendA = await message.channel.send(A)
-                        .then(setTimeout(() => { SendA.delete() }, 10000))
-                    }
-                    // If argument 0 is less than 5, ex: "!setprefix -"
-                    else if (args[1].length < 5) {
-                        const A = new discord.MessageEmbed()
-                            .setTitle('New Preifx!')
-                            .setDescription('A new prefix has been added to ')
-                        db.push(`${message.guild.id}.prefix`, args[1])
                     }
                 }
             }

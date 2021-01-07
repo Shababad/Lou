@@ -91,7 +91,16 @@ client.on("message", async (message) => {
     } else {
         prefix = prefixes;
     }
-
+    const args = message.content.slice(prefix.length).trim().split(' ');
+    if(args){
+        if(args[0]){if(args[0].startsWith('<')&&args[0].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[1]){if(args[1].startsWith('<')&&args[1].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[2]){if(args[2].startsWith('<')&&args[2].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[3]){if(args[3].startsWith('<')&&args[3].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[4]){if(args[4].startsWith('<')&&args[4].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[5]){if(args[5].startsWith('<')&&args[5].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+        if(args[6]){if(args[6].startsWith('<')&&args[6].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
+    }
     if (message.mentions.users.has('790504650909417482')) {
         message.channel.send(`prefix in this server is ${prefix}`)
     }
@@ -100,16 +109,18 @@ client.on("message", async (message) => {
     if (!message.guild) return;
     if (message.content.startsWith(prefix)) {
 
-    if (!message.member)
-        message.member = await message.guild.fetchMember(message);
-        const args = message.content.slice(prefix.length).trim().split(/ +/g);
-        const cmd = args.shift().toLowerCase();
+        if (!message.member)
+            message.member = await message.guild.fetchMember(message);
+            const args = message.content.slice(prefix.length).trim().split(/ +/g);
+            const cmd = args.shift().toLowerCase();
 
-    if (cmd.length === 0) return;
-    let command = client.commands.get(cmd);
-    if (!command) command = client.commands.get(client.aliases.get(cmd));
-    if (command) command.run(client, message, args);
- }
+        if (cmd.length === 0) return;
+        let command = client.commands.get(cmd);
+        if (!command) command = client.commands.get(client.aliases.get(cmd));
+        if (command) command.run(client, message, args);
+        if (command) {db.add(`${message.guild.id}.totalcommands`, 1)}
+        if (command) {db.add(`${message.author.id}.totalcommands`, 1)}
+    }
 });
 
 
