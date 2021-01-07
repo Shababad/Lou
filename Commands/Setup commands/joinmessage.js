@@ -50,13 +50,25 @@ module.exports = {
 
                 else if (args[0] == "preview") {
                     let JMDescX = JMDesc.replace("{user}", message.author.username).replace("{user.id}", message.author.id).replace("{user.discriminator}", message.author.discriminator).replace('{user.mention}', `<@${message.author.id}>`).replace("{server.name}", message.guild.name).replace("{server.id}", message.guild.id)
-                    const A = new discord.MessageEmbed()
-                        .setTitle(JMTitle)
-                        .setDescription(JMDescX)
-                        .setColor(JMColor)
+                    if (JMTitle == "01010010" && JMDesc == "01010010") {
+                        const B = new discord.MessageEmbed()
+                            .setTitle('404 Not Found')
+                            .setDescription('Embed can\'t be sent without a Title and a Descriptiom')
+                        message.channel.send(B)
+                    }
+                    else {
+                        const A = new discord.MessageEmbed()
+                        if (JMTitle !== "01010010") {
+                            A.setTitle(JMTitle)
+                        }
+                        else if (JMDesc !== "01010010") {
+                            A.setDescription(JMDescX)
+                        }
+                        A.setColor(JMColor)
                         message.delete()
                         const SendA = await message.channel.send(A)
                         .then(setTimeout(() => { SendA.delete() }, 30000))
+                    }
                 }
                 else if (args[0] == "docs") {
                     const A = new discord.MessageEmbed()
@@ -69,7 +81,8 @@ module.exports = {
                             {name: "> joinmessage", value: `> See the main page of the joinmessage\n> Usage: \`${p}joinmessage\``},
                             {name: "> docs", value: `> See the documentation of this command\n> Usage: \`${p}joinmessage docs\``},
                             {name: "> preview", value: `> See the preview of the joinmessage for this server\n> Usage: \`${p}joinmessage preview\``},
-                            {name: "> set...", value: `> Set Embed parts of the Embed\n> Usage: \`${p}joinmessage set... <Text>\``}
+                            {name: "> set...", value: `> Set Embed parts of the Embed\n> Usage: \`${p}joinmessage set... <Text>\``},
+                            {name: "> remove...", value: `> Remove Embed parts of the Embed\n> Usage: \`${p}joinmessage remove...\``}
                         )
                         .addField('\u200B', '\u200B')
                         .addField("**EMBED PARTS**", "Parts name of the embed")
@@ -77,6 +90,8 @@ module.exports = {
                             {name: "> settitle", value: `> set title of the embed\n> Usage: \`${p}joinmessage settitle <Text>\``},
                             {name: "> setdesc", value: `> set description of the embed\n> Usage: \`${p}joinmessage setdesc <Text>\``},
                             {name: "> setcolor", value: `> set color of the embed\n> Usage: \`${p}joinmessage setcolor <Hex color>\`\n> To get the Hex color code, click [here](https://www.google.com/search?sxsrf=ALeKk02U6m7EHf7qGxcylJZNWjbnJNvtug%3A1609836288447&ei=ACf0X5rsGoSCjLsPgviS2Ac&q=color+picker&oq=%23color&gs_lcp=CgZwc3ktYWIQAxgAMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHUABYAGCMHGgAcAJ4AIABAIgBAJIBAJgBAKoBB2d3cy13aXrIAQjAAQE&sclient=psy-ab)`},
+                            {name: "> removetitle", value: `> remove title of the embed\n> Usage: \`${p}joinmessage removetitle\``},
+                            {name: "> removedesc", value: `> remove description of the embed\n> Usage: \`${p}joinmessage removedesc\``},
                             { name: '\u200B', value: '\u200B' }
                         )
                         .addField("**TEMPLATE STRINGS**", 'Get all the name of the Template strings')
@@ -87,13 +102,8 @@ module.exports = {
                             {name: "> `{user.tag}`", value: `> get the name#tag of the joined member, ex: **${message.author.tag}**`},
                             {name: "> `{user.mention}`", value: `> ping the joined member, ex: <@${message.author.id}>`},
                             {name: "> `{server.members}`", value: `> get the total member value of the server, ex: **${message.guild.memberCount}**`},
+                            {name: "> `{server.name}`", value: `> get the name of the server, ex: **${message.guild.name}**`},
                             { name: '\u200B', value: '\u200B' }
-                        )
-                        .addField("**TEXT FORMATTING**", 'Guide for the formatting of the text')
-                        .addFields(
-                            {name: "> `*italics*` or `_italics_`", value: `> *Italic* the text`},
-                            {name: "> `**bold**`", value: `> Make the text **Bold**`},
-                            {name: "> `***bold-italics***`", value: `> Make the text ***Bold-Italics***`},
                         )
                         const SendA = await message.channel.send(A)
                 }
@@ -188,6 +198,32 @@ module.exports = {
                             .then(setTimeout(() => { SendA.delete() }, 10000))
                         }
                     }
+                }
+                else if (args[0] == "removetitle") {
+                    const A = new discord.MessageEmbed()
+                        .setTitle('Working...')
+                        .setDescription(`Removing join-message-title of ${message.guild.name}\n"**${JMTitle}**"`)
+                    const B = new discord.MessageEmbed()
+                        .setTitle('202 Accepted')
+                        .setDescription('join-message-title has been sucessfully removed!')
+                    const SendA = await message.channel.send(A)
+                    message.delete()
+                        .then(setTimeout(() => { SendA.edit(B) }, 4000))
+                        db.set(`${message.guild.id}.jm_title`, "01010010")
+                        .then(setTimeout(() => { SendA.delete() }, 10000))
+                }
+                else if (args[0] == "removedesc") {
+                    const A = new discord.MessageEmbed()
+                        .setTitle('Working...')
+                        .setDescription(`Removing join-message-description of ${message.guild.name}\n"**${JMTitle}**"`)
+                    const B = new discord.MessageEmbed()
+                        .setTitle('202 Accepted')
+                        .setDescription('join-message-desc has been sucessfully removed!')
+                    const SendA = await message.channel.send(A)
+                    message.delete()
+                        .then(setTimeout(() => { SendA.edit(B) }, 4000))
+                        db.set(`${message.guild.id}.jm_desc`, "01010010")
+                        .then(setTimeout(() => { SendA.delete() }, 10000))
                 }
             }
         }

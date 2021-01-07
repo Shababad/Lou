@@ -98,7 +98,7 @@ module.exports = {
                         const SendA = await message.channel.send(A)
                 }
                 else if (args[0] == "settitle") {
-                    let x = args.slice(1).leave(" ")
+                    let x = args.slice(1).join(" ")
                     if (!x.length) {
                         const A = new discord.MessageEmbed()
                             .setTitle('411 Length required')
@@ -130,7 +130,7 @@ module.exports = {
                     }
                 }
                 else if (args[0] == "setdesc") {
-                    let x = args.slice(1).leave(" ")
+                    let x = args.slice(1).join(" ")
                     if (!x.length) {
                         const A = new discord.MessageEmbed()
                             .setTitle('411 Length required')

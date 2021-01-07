@@ -7,7 +7,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 module.exports = (client, guild) => {
     let channel = client.channels.cache.get('793124130220146698')
     const A = new discord.MessageEmbed()
-        .setTitle('I left a new server!')
+        .setTitle('I left a server!')
         .setThumbnail(guild.iconURL())
         .addFields(
             {name: 'Name', value: `\`${guild.name}\``, inline: true},

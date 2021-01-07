@@ -59,7 +59,7 @@ client.once("ready", async () => {
         cacheOptions: undefined // options for node-cache, default is undefined.
     });
 
-    /* Bot Status */ let Me = client2.getPlayer('#8R8P8QOLP'); let MyTrophies = (await Me).trophies; let s = ["Brawl Stars", `with ${MyTrophies} Trophies`, "Lou in Solo"]; var count = 0; setInterval((e) => {var randomNumber = Math.floor(Math.random() * 11); count = (count + randomNumber) % s.length; var news = s[count]; client.user.setActivity(news);}, 30000);
+    /* Bot Status */ let Me = client2.getPlayer('#8R8P8QOLP'); let MyTrophies = (await Me).trophies; let s = ["Brawl Stars", `with ${MyTrophies} Trophies`, "Lou in Solo", `with ${client.users.cache.size} players`, `in ${client.guilds.cache.size} server`, `Lou V.${version}`]; var count = 0; setInterval((e) => {var randomNumber = Math.floor(Math.random() * 11); count = (count + randomNumber) % s.length; var news = s[count]; client.user.setActivity(news);}, 30000);
 
     let stats = new ascii("Bot Stats")
         stats.setHeading("Value Name", "Value")
@@ -102,6 +102,8 @@ client.on("message", async (message) => {
         if(args[6]){if(args[6].startsWith('<')&&args[6].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
     }
     if (message.mentions.users.has('790504650909417482')) {
+        const A = new discord.MessageEmbed()
+            .setTitle
         message.channel.send(`prefix in this server is ${prefix}`)
     }
 
