@@ -16,6 +16,7 @@
  - [ ] **help.js** --- !help [command name]
  - [x] **emoji.js** --- !emoji <add/stock...> <#ID>
  - [ ] **stats.js** --- get ingame and Discord stats
+ - [ ] **botchannel.js** -- !botchannel set <#channel>
 ####  Details:
  - [ ] **emoji** --- add more emojis
  - [ ] **join/ -leavemessage** --- add image

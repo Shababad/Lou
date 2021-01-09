@@ -49,7 +49,7 @@ module.exports = {
                 }
 
                 else if (args[0] == "preview") {
-                    let JMDescX = JMDesc.replace("{user}", message.author.username).replace("{user.id}", message.author.id).replace("{user.discriminator}", message.author.discriminator).replace('{user.mention}', `<@${message.author.id}>`).replace("{server.name}", message.guild.name).replace("{server.id}", message.guild.id)
+                    let JMDescX = JMDesc.replace("{user}", message.author.username).replace("{user.id}", message.author.id).replace("{user.discriminator}", message.author.discriminator).replace('{user.mention}', `<@${message.author.id}>`).replace("{server.name}", message.guild.name).replace("{server.id}", message.guild.id).replace("{server.members}", message.guild.memberCount)
                     if (JMTitle == "01010010" && JMDesc == "01010010") {
                         const B = new discord.MessageEmbed()
                             .setTitle('404 Not Found')
@@ -61,7 +61,7 @@ module.exports = {
                         if (JMTitle !== "01010010") {
                             A.setTitle(JMTitle)
                         }
-                        else if (JMDesc !== "01010010") {
+                        if (JMDesc !== "01010010") {
                             A.setDescription(JMDescX)
                         }
                         A.setColor(JMColor)

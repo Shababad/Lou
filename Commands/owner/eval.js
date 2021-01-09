@@ -6,6 +6,7 @@ const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YT
     cache: true, // default is true
     cacheOptions: undefined // options for node-cache, default is undefined.
 });
+const ms = require('ms')
 
 module.exports = {
     name: "eval",

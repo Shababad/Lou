@@ -47,10 +47,6 @@ fs.readdir("./events/", (err, files) => {
 
 client.once("ready", async () => {
 
-    client.api.applications(client.user.id).guilds('guild id').commands.post({data: {
-        name: 'ping',
-        description: 'ping pong!'
-    }})
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
@@ -109,12 +105,12 @@ client.on("message", async (message) => {
                 {name: "**bot & server stats:**", value: `*Here are some improtant infos you should know*`, inline: false},
                 {name: "local prefix:", value: `\`${prefix}\``, inline: true},
                 {name: "guilds:", value: `\`${client.guilds.cache.size}\``, inline: true},
-                {name: "members:", value: `\`${client.members.cache.size}\``, inline: true},
+                {name: "members:", value: `\`${client.users.cache.size}\``, inline: true},
                 {name: "**Useful commands:**", value: `*Here are some useful commands you should know*`, inline: false},
                 {name: `\`${prefix}help\``, value: "Get a list of all commands"},
                 {name: `\`${prefix}support\``, value: "Get contact to the Lou HQ"}
             )
-        message.channel.send(`prefix in this server is ${prefix}`)
+        message.channel.send(A)
     }
 
     if (message.author.bot) return;
