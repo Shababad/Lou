@@ -21,10 +21,19 @@ module.exports = async (client, member) => {
         let channel = client.channels.cache.get(leavechannel)
         const lMTitleX = lMTitle.replace('{user}', member.user.username).replace('{user.name}', member.user.username).replace('{user.id}', member.user.id).replace('{user.tag}', member.user.tag).replace('{user.discriminator}', member.user.discriminator).replace('{server.members}', member.guild.memberCount).replace('{user.mention}', `<@${member.user.id}>`)
         const lMDescX = lMDesc.replace('{user}', member.user.username).replace('{user.name}', member.user.username).replace('{user.id}', member.user.id).replace('{user.tag}', member.user.tag).replace('{user.discriminator}', member.user.discriminator).replace('{server.members}', member.guild.memberCount).replace('{user.mention}', `<@${member.user.id}>`)
-        const A = new discord.MessageEmbed()
-            .setTitle(lMTitleX)
-            .setDescription(lMDescX)
-            .setColor(lMColor)
-        channel.send(A)
+        if (lMTitle == "01010010" && lMDesc == "01010010") {
+            return;
+        }
+        
+        else {
+            const A = new discord.MessageEmbed()
+            if (lMTitle !== "01010010") {
+                A.setTitle(lMTitleX)
+            }
+            if (lMDesc !== "01010010") {
+                A.setDescription(lMDescX)
+            }
+            A.setColor(lMColor)
+        }
     }
 }

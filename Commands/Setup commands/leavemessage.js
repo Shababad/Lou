@@ -9,12 +9,12 @@ module.exports = {
     usage: "!leavemessage settitle <Text here>",
     run: async (client, message, args) => {
         const leavechannel = await db.get(`${message.guild.id}.leavechannel`)
-        const lMTitles = await db.get(`${message.guild.id}.lm_title`)
-        let lMTitle;if (lMTitles == null) {lMTitle = "A Member left";} else {lMTitle = lMTitles;}
-        const lMDescs = await db.get(`${message.guild.id}.lm_desc`)
-        let lMDesc;if (lMDescs == null) {lMDesc = "{user} just left the server, hope you didn't had too much problem here :(";} else {lMDesc = lMDescs;}
-        const lMColors = await db.get(`${message.guild.id}.lm_color`)
-        let lMColor;if (lMColors == null) {lMColor = "#8afff1";} else {lMColor = lMColors;}
+        const LMTitles = await db.get(`${message.guild.id}.lm_title`)
+        let LMTitle;if (LMTitles == null) {LMTitle = "A Member left";} else {LMTitle = LMTitles;}
+        const LMDescs = await db.get(`${message.guild.id}.lm_desc`)
+        let LMDesc;if (LMDescs == null) {LMDesc = "{user} left the server... bye bye :(";} else {LMDesc = LMDescs;}
+        const LMColors = await db.get(`${message.guild.id}.lm_color`)
+        let LMColor;if (LMColors == null) {LMColor = "#8afff1";} else {LMColor = LMColors;}
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
         if (!message.member.hasPermission('MANAGE_GUILD')) {
             const A = new discord.MessageEmbed()
@@ -39,9 +39,9 @@ module.exports = {
                         .setTitle(`leave Message`)
                         .setDescription(`To edit the embed, use this command:\n\`\`\`${p}leavemessage <setdesc/settitle...> <Message here>\`\`\`\nTo see the preview. use this command:\`\`\`${p}leavemessage preview\`\`\`\nTo see the documentations, use:\`\`\`${p}leavemessage docs\`\`\``)
                         .addFields(
-                            {name: 'Title:', value: lMTitle},
-                            {name: 'Description:', value: lMDesc},
-                            {name: 'Color:', value: lMColor}
+                            {name: 'Title:', value: LMTitle},
+                            {name: 'Description:', value: LMDesc},
+                            {name: 'Color:', value: LMColor}
                         )
                     message.delete()
                     const SendA = await message.channel.send(A)
@@ -49,14 +49,26 @@ module.exports = {
                 }
 
                 else if (args[0] == "preview") {
-                    let lMDescX = lMDesc.replace("{user}", message.author.username).replace("{user.id}", message.author.id).replace("{user.discriminator}", message.author.discriminator).replace('{user.mention}', `<@${message.author.id}>`).replace("{server.name}", message.guild.name).replace("{server.id}", message.guild.id)
-                    const A = new discord.MessageEmbed()
-                        .setTitle(lMTitle)
-                        .setDescription(lMDescX)
-                        .setColor(lMColor)
+                    let LMDescX = LMDesc.replace("{user}", message.author.username).replace("{user.id}", message.author.id).replace("{user.discriminator}", message.author.discriminator).replace('{user.mention}', `<@${message.author.id}>`).replace("{server.name}", message.guild.name).replace("{server.id}", message.guild.id).replace("{server.members}", message.guild.memberCount)
+                    if (LMTitle == "01010010" && LMDesc == "01010010") {
+                        const B = new discord.MessageEmbed()
+                            .setTitle('404 Not Found')
+                            .setDescription('Embed can\'t be sent without a Title and a Descriptiom')
+                        message.channel.send(B)
+                    }
+                    else {
+                        const A = new discord.MessageEmbed()
+                        if (LMTitle !== "01010010") {
+                            A.setTitle(LMTitle)
+                        }
+                        if (LMDesc !== "01010010") {
+                            A.setDescription(LMDescX)
+                        }
+                        A.setColor(LMColor)
                         message.delete()
                         const SendA = await message.channel.send(A)
                         .then(setTimeout(() => { SendA.delete() }, 30000))
+                    }
                 }
                 else if (args[0] == "docs") {
                     const A = new discord.MessageEmbed()
@@ -69,7 +81,8 @@ module.exports = {
                             {name: "> leavemessage", value: `> See the main page of the leavemessage\n> Usage: \`${p}leavemessage\``},
                             {name: "> docs", value: `> See the documentation of this command\n> Usage: \`${p}leavemessage docs\``},
                             {name: "> preview", value: `> See the preview of the leavemessage for this server\n> Usage: \`${p}leavemessage preview\``},
-                            {name: "> set...", value: `> Set Embed parts of the Embed\n> Usage: \`${p}leavemessage set... <Text>\``}
+                            {name: "> set...", value: `> Set Embed parts of the Embed\n> Usage: \`${p}leavemessage set... <Text>\``},
+                            {name: "> remove...", value: `> Remove Embed parts of the Embed\n> Usage: \`${p}leavemessage remove...\``}
                         )
                         .addField('\u200B', '\u200B')
                         .addField("**EMBED PARTS**", "Parts name of the embed")
@@ -77,23 +90,20 @@ module.exports = {
                             {name: "> settitle", value: `> set title of the embed\n> Usage: \`${p}leavemessage settitle <Text>\``},
                             {name: "> setdesc", value: `> set description of the embed\n> Usage: \`${p}leavemessage setdesc <Text>\``},
                             {name: "> setcolor", value: `> set color of the embed\n> Usage: \`${p}leavemessage setcolor <Hex color>\`\n> To get the Hex color code, click [here](https://www.google.com/search?sxsrf=ALeKk02U6m7EHf7qGxcylJZNWjbnJNvtug%3A1609836288447&ei=ACf0X5rsGoSCjLsPgviS2Ac&q=color+picker&oq=%23color&gs_lcp=CgZwc3ktYWIQAxgAMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHMgQIABBHUABYAGCMHGgAcAJ4AIABAIgBAJIBAJgBAKoBB2d3cy13aXrIAQjAAQE&sclient=psy-ab)`},
+                            {name: "> removetitle", value: `> remove title of the embed\n> Usage: \`${p}leavemessage removetitle\``},
+                            {name: "> removedesc", value: `> remove description of the embed\n> Usage: \`${p}leavemessage removedesc\``},
                             { name: '\u200B', value: '\u200B' }
                         )
                         .addField("**TEMPLATE STRINGS**", 'Get all the name of the Template strings')
                         .addFields(
-                            {name: "> `{user}`", value: `> get the name of the member, ex: **${message.author.username}**`},
-                            {name: "> `{user.id}`", value: `> get the id of the member, ex: **${message.author.id}**`},
-                            {name: "> `{user.discriminator}`", value: `> get the discriminator of the member, ex: **${message.author.discriminator}**`},
-                            {name: "> `{user.tag}`", value: `> get the name#tag of the member, ex: **${message.author.tag}**`},
-                            {name: "> `{user.mention}`", value: `> ping the member, ex: <@${message.author.id}>`},
+                            {name: "> `{user}`", value: `> get the name of the leaveed member, ex: **${message.author.username}**`},
+                            {name: "> `{user.id}`", value: `> get the id of the leaveed member, ex: **${message.author.id}**`},
+                            {name: "> `{user.discriminator}`", value: `> get the discriminator of the leaveed member, ex: **${message.author.discriminator}**`},
+                            {name: "> `{user.tag}`", value: `> get the name#tag of the leaveed member, ex: **${message.author.tag}**`},
+                            {name: "> `{user.mention}`", value: `> ping the leaveed member, ex: <@${message.author.id}>`},
                             {name: "> `{server.members}`", value: `> get the total member value of the server, ex: **${message.guild.memberCount}**`},
+                            {name: "> `{server.name}`", value: `> get the name of the server, ex: **${message.guild.name}**`},
                             { name: '\u200B', value: '\u200B' }
-                        )
-                        .addField("**TEXT FORMATTING**", 'Guide for the formatting of the text')
-                        .addFields(
-                            {name: "> `*italics*` or `_italics_`", value: `> *Italic* the text`},
-                            {name: "> `**bold**`", value: `> Make the text **Bold**`},
-                            {name: "> `***bold-italics***`", value: `> Make the text ***Bold-Italics***`},
                         )
                         const SendA = await message.channel.send(A)
                 }
@@ -188,6 +198,32 @@ module.exports = {
                             .then(setTimeout(() => { SendA.delete() }, 10000))
                         }
                     }
+                }
+                else if (args[0] == "removetitle") {
+                    const A = new discord.MessageEmbed()
+                        .setTitle('Working...')
+                        .setDescription(`Removing leave-message-title of ${message.guild.name}\n"**${LMTitle}**"`)
+                    const B = new discord.MessageEmbed()
+                        .setTitle('202 Accepted')
+                        .setDescription('leave-message-title has been sucessfully removed!')
+                    const SendA = await message.channel.send(A)
+                    message.delete()
+                        .then(setTimeout(() => { SendA.edit(B) }, 4000))
+                        db.set(`${message.guild.id}.lm_title`, "01010010")
+                        .then(setTimeout(() => { SendA.delete() }, 10000))
+                }
+                else if (args[0] == "removedesc") {
+                    const A = new discord.MessageEmbed()
+                        .setTitle('Working...')
+                        .setDescription(`Removing leave-message-description of ${message.guild.name}\n"**${LMTitle}**"`)
+                    const B = new discord.MessageEmbed()
+                        .setTitle('202 Accepted')
+                        .setDescription('leave-message-desc has been sucessfully removed!')
+                    const SendA = await message.channel.send(A)
+                    message.delete()
+                        .then(setTimeout(() => { SendA.edit(B) }, 4000))
+                        db.set(`${message.guild.id}.lm_desc`, "01010010")
+                        .then(setTimeout(() => { SendA.delete() }, 10000))
                 }
             }
         }
