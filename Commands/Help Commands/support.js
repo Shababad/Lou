@@ -78,7 +78,7 @@ module.exports = {
                     });
                 } else if (reaction.emoji.name === '💡') {
                     SendA.reactions.removeAll()
-                    SendA.edit(Bug);
+                    SendA.edit(suggestion);
                     const filter = (m) => m.author.id === message.author.id
                     const collector = message.channel.createMessageCollector(filter, {max: 1});
 
@@ -109,14 +109,14 @@ module.exports = {
                     });
                 } else if (reaction.emoji.name === '❔') {
                     SendA.reactions.removeAll()
-                    SendA.edit(Bug);
+                    SendA.edit(question);
                     const filter = (m) => m.author.id === message.author.id
                     const collector = message.channel.createMessageCollector(filter, {max: 1});
 
                     collector.on('collect', m => {
                         if (m.content == "cancel") {
                             const A = new discord.MessageEmbed()
-                                .setTitle('Question!')
+                                .setTitle('Action Canceled!')
                                 .setDescription('Action has been canceled')
                             message.delete()
                             message.channel.send(A).then(collector.stop())
@@ -126,7 +126,7 @@ module.exports = {
                             SendA.delete();
                             message.channel.send(`Your message has been sent to the Lou Support team.`)
                             const MSG = new discord.MessageEmbed()
-                                .setTitle('Bug report!')
+                                .setTitle('Question!')
                                 .setDescription(`Content: "**${m.content}**"`)
                                 .addFields(
                                     {name: "Username:", value: `\`${message.author.username}\``},
@@ -140,14 +140,14 @@ module.exports = {
                     });
                 } else if (reaction.emoji.name === '🌐') {
                     SendA.reactions.removeAll()
-                    SendA.edit(Bug);
+                    SendA.edit(others);
                     const filter = (m) => m.author.id === message.author.id
                     const collector = message.channel.createMessageCollector(filter, {max: 1});
 
                     collector.on('collect', m => {
                         if (m.content == "cancel") {
                             const A = new discord.MessageEmbed()
-                                .setTitle('Others...')
+                                .setTitle('Action Canceled!')
                                 .setDescription('Action has been canceled')
                             message.delete()
                             message.channel.send(A).then(collector.stop())
@@ -157,7 +157,7 @@ module.exports = {
                             SendA.delete();
                             message.channel.send(`Your message has been sent to the Lou Support team.`)
                             const MSG = new discord.MessageEmbed()
-                                .setTitle('Bug report!')
+                                .setTitle('Others?')
                                 .setDescription(`Content: "**${m.content}**"`)
                                 .addFields(
                                     {name: "Username:", value: `\`${message.author.username}\``},

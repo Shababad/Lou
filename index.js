@@ -79,7 +79,6 @@ client.once("ready", async () => {
 });
 
 client.on("message", async (message) => {
-
     let prefix;
     let prefixes = await db.fetch(`${message.guild.id}.prefix`);
     if (prefixes == null) {
@@ -102,7 +101,7 @@ client.on("message", async (message) => {
             .setTitle('Uncle Lou is here for you!')
             .setDescription(`Here are some informations that may help you out!`)
             .addFields(
-                {name: "**bot & server stats:**", value: `*Here are some improtant infos you should know*`, inline: false},
+                {name: "**bot & server stats:**", value: `*Here is some information that may help you out*`, inline: false},
                 {name: "local prefix:", value: `\`${prefix}\``, inline: true},
                 {name: "guilds:", value: `\`${client.guilds.cache.size}\``, inline: true},
                 {name: "members:", value: `\`${client.users.cache.size}\``, inline: true},
@@ -128,6 +127,9 @@ client.on("message", async (message) => {
         if (command) command.run(client, message, args);
         if (command) {db.add(`${message.guild.id}.totalcommands`, 1)}
         if (command) {db.add(`${message.author.id}.totalcommands`, 1)}
+        if (message == command) {
+            message.channel.send('.')
+        }
     }
 });
 
