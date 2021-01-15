@@ -46,11 +46,10 @@ fs.readdir("./events/", (err, files) => {
 
 
 client.once("ready", async () => {
-
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
-    const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjVkNTYxM2VkLTRkNzctNDE1Mi1hNjcxLTNmNTQ4NDBjZGZmYyIsImlhdCI6MTYwODEwNzkyNiwic3ViIjoiZGV2ZWxvcGVyL2VjZjRkOThlLTgyOTMtZTQ1Yi1lOTAzLTJjZjk4NzI1ODNmZiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiOTMuMjAyLjI0My4xNTMiXSwidHlwZSI6ImNsaWVudCJ9XX0.BqAqdCBnHv6vPNTZB7spDEO0omit1z6PbJwCFHEbc4shO7_4-crQmKoUyo85aUi8hGMB6dWDsrjEsUbGEL6ZuA", { 
+    const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjUyZGEzMTg2LWE4M2MtNDMyMi05ODIyLTc5MjkyNmFlOTk4OCIsImlhdCI6MTYxMDQ0OTIyMywic3ViIjoiZGV2ZWxvcGVyL2VjZjRkOThlLTgyOTMtZTQ1Yi1lOTAzLTJjZjk4NzI1ODNmZiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODcuMTc3Ljc5LjkyIl0sInR5cGUiOiJjbGllbnQifV19.4ywl2BUAjFdMVPQQ5JiMa_8KsZ4GKyZrlQEtdB3XxA4sfAk3sxik24oSxLiYtR5hW6bd0Eeax8ed0kQU8UjlKQ", { 
         cache: true, // default is true
         cacheOptions: undefined // options for node-cache, default is undefined.
     });
@@ -86,6 +85,9 @@ client.on("message", async (message) => {
     } else {
         prefix = prefixes;
     }
+    const sniff = ['*Sniffs* *, someone said my name?', ':eyes:, someone talked about me?', ':eyes:', 'Sleeping... No time to talk... :sleeping: ']
+    var randomSniff = Math.floor(Math.random()*sniff.length) + 1;
+    if (message.content.includes('lou')||message.content.includes('Lou')) {message.channel.send(sniff[randomSniff])}
     const args = message.content.slice(prefix.length).trim().split(' ');
     if(args){
         if(args[0]){if(args[0].startsWith('<')&&args[0].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
@@ -114,6 +116,7 @@ client.on("message", async (message) => {
 
     if (message.author.bot) return;
     if (!message.guild) return;
+    if (message.author.id == client.user.id) return;
     if (message.content.startsWith(prefix)) {
 
         if (!message.member)

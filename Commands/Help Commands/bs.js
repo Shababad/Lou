@@ -6,21 +6,14 @@ const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YT
     cache: true, // default is true
     cacheOptions: undefined // options for node-cache, default is undefined.
 });
-const ms = require('ms')
 
 module.exports = {
-    name: "eval",
-    description: "eval a piece of script",
-    category: "Owner",
-    usage: "!eval <script>",
+    name: "bss",
+    description: "DESCRIPTION",
+    category: "CATEGORY",
+    usage: "",
     run: async (client, message, args) => {
-        if (message.author.id == "718870868025147515") {
-            let x = args.slice(0).join(" ");
-            eval(x).catch((err) => {message.channel.send(`\`\`\`${err}\`\`\``)})
-            console.log(x)
-        }
-        else {
-            return;
-        }
+        const Player = client2.getPlayer(args[0].toUpperCase()).catch(err => message.channel.send('Player not found'))
+        message.channel.send((await Player).name)
     }
 }

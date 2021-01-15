@@ -36,7 +36,7 @@ module.exports = {
                                         message.channel.send(`**What Nickname do you want to give the user after verifying?**\nType \`cancel\` to cancel this action,\n\`docs\` to see the docs,\nand\`none\` if you don't want to count this as a requirement!`)
                                         const collector3 = message.channel.createMessageCollector(filter);
             
-                                        collector3.on('collect', mess => {
+                                        collector3.on('collect', async mess => {
                                             if (mess.content == 'cancel') {
                                                 message.channel.send('Action has been sucessfully canceled!')
                                                 collector3.stop()
@@ -57,17 +57,17 @@ module.exports = {
                                             } else if (mess.content == 'none') {
                                                 message.channel.send(`Success!\nVerification Channel: <#${m.mentions.channels.first().id}>\nUnverfied Role: <@&${msg.mentions.roles.first().id}>\nVerified Role: <@&${mes.mentions.roles.first().id}>\nVerified Username: None`)
                                                 collector3.stop();
-                                                db.set(`${message.guild.id}.vchannel`, m.mentions.channels.first().id);
-                                                db.set(`${message.guild.id}.vrole1`, msg.mentions.roles.first().id);
-                                                db.set(`${message.guild.id}.vrole2`, mes.mentions.roles.first().id);
-                                                db.set(`${message.guild.id}.vname`, null)
+                                                await db.set(`${message.guild.id}.vchannel`, m.mentions.channels.first().id);
+                                                await db.set(`${message.guild.id}.vrole1`, msg.mentions.roles.first().id);
+                                                await db.set(`${message.guild.id}.vrole2`, mes.mentions.roles.first().id);
+                                                await db.set(`${message.guild.id}.vname`, null)
                                             } else {
                                                 message.channel.send(`Success!\nVerification Channel: <#${m.mentions.channels.first().id}>\nUnverfied Role: <@&${msg.mentions.roles.first().id}>\nVerified Role: <@&${mes.mentions.roles.first().id}>\nVerified Username: **${mess.content}**`)
                                                 collector3.stop();
-                                                db.set(`${message.guild.id}.vchannel`, m.mentions.channels.first().id);
-                                                db.set(`${message.guild.id}.vrole1`, msg.mentions.roles.first().id);
-                                                db.set(`${message.guild.id}.vrole2`, mes.mentions.roles.first().id);
-                                                db.set(`${message.guild.id}.vname`, mess.content)
+                                                await db.set(`${message.guild.id}.vchannel`, m.mentions.channels.first().id);
+                                                await db.set(`${message.guild.id}.vrole1`, msg.mentions.roles.first().id);
+                                                await db.set(`${message.guild.id}.vrole2`, mes.mentions.roles.first().id);
+                                                await db.set(`${message.guild.id}.vname`, mess.content)
                                             }
                                             
                                         });

@@ -18,6 +18,18 @@ module.exports = async (client, member) => {
     let JMDesc;if (JMDescs == null) {JMDesc = "Welcome {user} to {server.name}, hope you enjoy your stay!";} else {JMDesc = JMDescs;}
     const JMColors = await db.get(`${member.guild.id}.jm_color`)
     let JMColor;if (JMColors == null) {JMColor = "#8afff1";} else {JMColor = JMColors;}
+    const vchannel = await db.get(`${member.guild.id}.vchannel`)
+    const role1 = await db.get(`${member.guild.id}.vrole1`)
+    const role2 = await db.get(`${member.guild.id}.vrole2`)
+    const PTag = await db.get(`${member.user.id}.tag`)
+
+    if (vchannel == null) {return;} else {
+        if (PTag == null) {
+            member.roles.add(role1)
+        } else {
+            member.roles.add(role2)
+        }
+    }
 
     if (joinchannel == null) {
         return;
