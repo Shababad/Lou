@@ -68,9 +68,13 @@ module.exports = {
                                     collector.stop()
                                     message.channel.send(`Saved you as '**${(await Player).name}**'`).then(db.set(`${message.author.id}.tag`, m.content.toUpperCase()));
                                     message.member.roles.remove(role1).then(message.member.roles.add(role2));
-                                    const trophies = millify((await Player).trophies, {precision: 1})
-                                    const vnameX = vname.replace(/{bs.name}/gi, (await Player).name).replace(/{bs.trophies}/gi, trophies).replace(/{bs.club}/gi, (await Player).club.name).replace(/{bs.tag}/gi, m.content).replace(/{user}/gi, message.author.username).replace(/{user.tag}/gi, message.author.tag).replace(/{user.discriminator}/gi, message.author.discriminator)
-                                    message.member.setNickname(vnameX)
+                                    if (vname !== null) {
+                                        const trophies = millify((await Player).trophies, {precision: 1})
+                                        const vnameX = vname.replace(/{bs.name}/gi, (await Player).name).replace(/{bs.trophies}/gi, trophies).replace(/{bs.club}/gi, (await Player).club.name).replace(/{bs.tag}/gi, m.content).replace(/{user}/gi, message.author.username).replace(/{user.tag}/gi, message.author.tag).replace(/{user.discriminator}/gi, message.author.discriminator)
+                                        message.member.setNickname(vnameX)
+                                    } else {
+                                        return;
+                                    }
 
                                 }
                             })

@@ -33,7 +33,7 @@ module.exports = {
                                 collector2.on('collect', mes => {
                                     if (mes.mentions.roles.first()) {
                                         collector2.stop()
-                                        message.channel.send(`**What Nickname do you want to give the user after verifying?**\nType \`cancel\` to cancel this action,\n\`docs\` to see the docs,\nand\`none\` if you don't want to count this as a requirement!`)
+                                        message.channel.send(`**What Nickname do you want to give the user after verifying?**\nType \`cancel\` to cancel this action,\n\`docs\` to see the docs,\nand\`none\` if you don't want to count this as a requirement!\n(Example: **{bs.name} | {bs.trophies}**)`)
                                         const collector3 = message.channel.createMessageCollector(filter);
             
                                         collector3.on('collect', async mess => {
