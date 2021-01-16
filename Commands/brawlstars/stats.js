@@ -13,14 +13,10 @@ module.exports = {
     category: "CATEGORY",
     usage: "",
     run: async (client, message, args) => {
-        const player = await client2.getPlayer('#8R8P8QOLP');
-        let brawlers = "Brawlers: "
-        if (player.brawlers.find(b => b.name == "SHELLY")) {
-            brawlers += "Shelly, "
+        if (message.guild.members.cache.has('326039981501972481')) {
+            message.channel.send(`**This command is not out yet.**\nYou can ask <@326039981501972481> for your stats for now...`)
+        } else {
+            message.channel.send('**This command is not out yet.**')
         }
-        if (player.brawlers.find(b => b.name == "AMBER")) {
-            brawlers += "Shelly, "
-        }
-        message.channel.send(brawlers)
     }
 }
