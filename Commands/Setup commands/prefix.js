@@ -6,7 +6,8 @@ module.exports = {
     name: "prefix",
     description: "Set the prefix of a server",
     category: "Setup Commands",
-    usage: "!prefix set <prefix>",
+    usage: "prefix set <prefix>",
+    example: "prefix set ?",
     run: async (client, message, args) => {
 
         let p;

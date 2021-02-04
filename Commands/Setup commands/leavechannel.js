@@ -6,7 +6,8 @@ module.exports = {
     name: "leavechannel",
     description: "Set a Leave-Channel for a server",
     category: "Setup Commands",
-    usage: "!leavechannel set <#channel>",
+    usage: "leavechannel set <#channel>",
+    example: "leavechannel set #bye-bye",
     run: async (client, message, args) => {
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
         if (!message.member.hasPermission('MANAGE_CHANNELS')) {

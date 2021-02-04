@@ -6,7 +6,8 @@ module.exports = {
     name: "joinmessage",
     description: "Set a join message for a server",
     category: "Setup Command",
-    usage: "!joinmessage settitle <Text here>",
+    usage: "joinmessage <settitle/setdesc...> <Text here>",
+    example: "joinmessage setdesc Welcome {user} to this server!",
     run: async (client, message, args) => {
         const joinchannel = await db.get(`${message.guild.id}.joinchannel`)
         const JMTitles = await db.get(`${message.guild.id}.jm_title`)

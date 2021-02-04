@@ -4,9 +4,11 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "support",
-    description: "DESCRIPTION",
-    category: "CATEGORY",
-    usage: "",
+    description: "Get official support from the Lou Support team!",
+    category: "Help ",
+    usage: "support",
+    example: "support",
+    cooldown: 86400,
     run: async (client, message, args) => {
         if (!args[0]) {
             const HQChannel = client.channels.cache.get('797071649765589052');

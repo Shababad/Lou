@@ -6,7 +6,8 @@ module.exports = {
     name: "joinchannel",
     description: "Set a Join-Channel for a server",
     category: "Setup Commands",
-    usage: "!joinchannel set <#channel>",
+    usage: "joinchannel set <#channel>",
+    example: "joinchannel set #welcome",
     run: async (client, message, args) => {
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}
         if (!message.member.hasPermission('MANAGE_CHANNELS')) {

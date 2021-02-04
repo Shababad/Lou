@@ -4,9 +4,10 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "verifysetup",
-    description: "DESCRIPTION",
-    category: "CATEGORY",
-    usage: "",
+    description: "Set up the verification system for this server",
+    category: "Setup",
+    usage: "verifysetup",
+    example: "verifysetup",
     run: async (client, message, args) => {
         const vchannel = await db.get(`${message.guild.id}.vchannel`)
         let p;let prefixes=await db.get(`${message.guild.id}.prefix`);if(prefixes==null){p='!';}else{p=prefixes;}

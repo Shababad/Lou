@@ -6,7 +6,8 @@ module.exports = {
     name: "leavemessage",
     description: "Set a leave message for a server",
     category: "Setup Command",
-    usage: "!leavemessage settitle <Text here>",
+    usage: "leavemessage settitle <Text here>",
+    example: "leavemessage setdesc Bye bye {user}, cries~",
     run: async (client, message, args) => {
         const leavechannel = await db.get(`${message.guild.id}.leavechannel`)
         const LMTitles = await db.get(`${message.guild.id}.lm_title`)

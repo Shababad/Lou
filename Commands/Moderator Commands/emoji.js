@@ -55,7 +55,7 @@ module.exports = {
             else if (args[0] == "stock") {
                 const A = new discord.MessageEmbed()
                     .setTitle('Player Pins')
-                    .setDescription(`Want to add some cool pins to this server? \nChoose the pins you want and use this command:\`\`\`${p}emoji add <ID>\`\`\`\nExample:\`\`\`${p}emoji add A0005`)
+                    .setDescription(`Want to add some cool pins to this server? \nChoose the pins you want and use this command:\`\`\`${p}emoji add <ID>\`\`\`\nExample:\`\`\`${p}emoji add A0005\`\`\``)
                     .addFields(
                         {name: "__**Happy Pins**__", value: "Pack ID: `B001\n`"},
                         {name: `> ${smile} · Smile`, value: "> ID: `A0001`"},

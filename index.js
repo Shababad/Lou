@@ -13,7 +13,9 @@
 const discord = require("discord.js");
 const { Command } = require("discord.js-commando");
 const { Client, Collection } = require("discord.js");
-const client = new discord.Client();
+const client = new discord.Client({
+    partials: ['MESSAGE', 'REACTION'],
+});
 const { token, version } = require("./config.json");
 const fs = require("fs");
 const request = require('request')
@@ -21,7 +23,12 @@ const {Client:BSClient} = require('brawlstars');
 const capitalize = require('chumnend-capitalize');
 const ascii = require("ascii-table");
 const { Database } = require("quickmongo");
+const ms = require("ms");
 const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.net/790504650909417482");
+const pingedRecently = new Set();
+const talkedRecently = new Set();
+const warnedRecently = new Set();
+const cooldowns = new discord.Collection();
 
 
 client.commands = new Collection();;
@@ -43,19 +50,12 @@ fs.readdir("./events/", (err, files) => {
         client.on(evtName, evt.bind(null, client));
     });
 });
-
+  
 
 client.once("ready", async () => {
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
-    const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6IjUyZGEzMTg2LWE4M2MtNDMyMi05ODIyLTc5MjkyNmFlOTk4OCIsImlhdCI6MTYxMDQ0OTIyMywic3ViIjoiZGV2ZWxvcGVyL2VjZjRkOThlLTgyOTMtZTQ1Yi1lOTAzLTJjZjk4NzI1ODNmZiIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODcuMTc3Ljc5LjkyIl0sInR5cGUiOiJjbGllbnQifV19.4ywl2BUAjFdMVPQQ5JiMa_8KsZ4GKyZrlQEtdB3XxA4sfAk3sxik24oSxLiYtR5hW6bd0Eeax8ed0kQU8UjlKQ", { 
-        cache: true, // default is true
-        cacheOptions: undefined // options for node-cache, default is undefined.
-    });
-
-    /* Bot Status */ let Me = client2.getPlayer('#8R8P8QOLP'); let MyTrophies = (await Me).trophies; let s = ["Brawl Stars", `with ${MyTrophies} Trophies`, "Lou in Solo", `with ${client.users.cache.size} players`, `in ${client.guilds.cache.size} server`, `Lou V.${version}`]; var count = 0; setInterval((e) => {var randomNumber = Math.floor(Math.random() * 11); count = (count + randomNumber) % s.length; var news = s[count]; client.user.setActivity(news);}, 30000);
-
     let stats = new ascii("Bot Stats")
         stats.setHeading("Value Name", "Value")
         stats.addRow("Guilds", client.guilds.cache.size)
@@ -63,7 +63,6 @@ client.once("ready", async () => {
         stats.addRow("Version", version)
 
     console.log(stats.toString())
-    console.log(client.readyTime)
     console.log(`Logged in as ${client.user.tag}!`);
 
     const channel = await client.channels.cache.get('792786693014421564')
@@ -77,65 +76,139 @@ client.once("ready", async () => {
     channel.send(A)
 });
 
-client.on("message", async (message) => {
-    let prefix;
-    let prefixes = await db.fetch(`${message.guild.id}.prefix`);
-    if (prefixes == null) {
-        prefix = "!";
-    } else {
-        prefix = prefixes;
-    }
-    const sniff = ['*Sniffs* *, someone said my name?', ':eyes:, someone talked about me?', ':eyes:', 'Sleeping... No time to talk... :sleeping: ']
-    var randomSniff = Math.floor(Math.random()*sniff.length) + 1;
-    if (message.content.includes('lou')||message.content.includes('Lou')) {message.channel.send(sniff[randomSniff])}
-    const args = message.content.slice(prefix.length).trim().split(' ');
-    if(args){
-        if(args[0]){if(args[0].startsWith('<')&&args[0].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[1]){if(args[1].startsWith('<')&&args[1].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[2]){if(args[2].startsWith('<')&&args[2].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[3]){if(args[3].startsWith('<')&&args[3].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[4]){if(args[4].startsWith('<')&&args[4].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[5]){if(args[5].startsWith('<')&&args[5].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-        if(args[6]){if(args[6].startsWith('<')&&args[6].length >= 3&&!message.mentions.channels.first()&&!message.mentions.members.first()&&!message.mentions.roles.first()){let x=message.content;let y=x.replace(/</g, '').replace(/>/g, '');const A = new discord.MessageEmbed().setTitle('Warning').setDescription(`Please do not necessary put \`<>\` or \`[]\` into a command, they have meanings.\n\`<Required Field>\` and \`[Optional Field]\`.\n\nExample:\n> **In the documentation:**\`\`\`!prefix set <PREFIX>\`\`\`**Usage:**\`\`\`!prefix set ?\`\`\` \n\nYour Command:\n\`\`\`${message.content}\`\`\`Auto Corrector:\`\`\`${y}\`\`\``);message.author.send(A)}}
-    }
-    if (message.mentions.users.has('790504650909417482')) {
-        const A = new discord.MessageEmbed()
-            .setTitle('Uncle Lou is here for you!')
-            .setDescription(`Here are some informations that may help you out!`)
-            .addFields(
-                {name: "**bot & server stats:**", value: `*Here is some information that may help you out*`, inline: false},
-                {name: "local prefix:", value: `\`${prefix}\``, inline: true},
-                {name: "guilds:", value: `\`${client.guilds.cache.size}\``, inline: true},
-                {name: "members:", value: `\`${client.users.cache.size}\``, inline: true},
-                {name: "**Useful commands:**", value: `*Here are some useful commands you should know*`, inline: false},
-                {name: `\`${prefix}help\``, value: "Get a list of all commands"},
-                {name: `\`${prefix}support\``, value: "Get contact to the Lou HQ"}
-            )
-        message.channel.send(A)
-    }
 
+
+client.on("message", async (message) => {
+
+    /* PREFIX */ let p; let prefixes = await db.fetch(`${message.guild.id}.prefix`); if (prefixes == null) { p = "!" } else { p = prefixes }
+    /* ARGS */ const args = message.content.slice(p.length).trim().split(/ +/g);
+
+    if (message.author.id == '790504650909417482') {
+        setTimeout(() => {message.delete()}, 10000);
+    }   
+    if (message.author.id == '790504650909417482') return;
     if (message.author.bot) return;
     if (!message.guild) return;
-    if (message.author.id == client.user.id) return;
-    if (message.content.startsWith(prefix)) {
+    if (message.author.id === client.user.id) return;
+    if (message.content.startsWith(p)) {
 
         if (!message.member)
-            message.member = await message.guild.fetchMember(message);
-            const args = message.content.slice(prefix.length).trim().split(/ +/g);
+            message.member = await message.guild.members.fetch(message);
             const cmd = args.shift().toLowerCase();
 
         if (cmd.length === 0) return;
-        let command = client.commands.get(cmd);
-        if (!command) command = client.commands.get(client.aliases.get(cmd));
-        if (command) command.run(client, message, args);
-        if (command) {db.add(`${message.guild.id}.totalcommands`, 1)}
-        if (command) {db.add(`${message.author.id}.totalcommands`, 1)}
-        if (message == command) {
-            message.channel.send('.')
+        const command = client.commands.get(cmd) || client.commands.find(c => c.aliases && c.aliases.includes(cmd));
+        /*if (command) {
+            if (message.guild.id !== '761346495194202132' && message.guild.id !== '740307260823044139') {
+                if (warnedRecently.has(message.author.id)) {
+                    message.delete();
+                    return;
+                } else {
+                    message.delete();
+                    warnedRecently.add(message.author.id);
+                    setTimeout(() => {
+                        warnedRecently.delete(message.author.id);
+                    }, 60000);
+                    const maintain = new discord.MessageEmbed().setTitle('Closed').setDescription('This bot is currently not public yet, please wait until the bot owner starts the bot! :pray:')
+                    const SendMaintain = await message.channel.send(maintain);
+                    setTimeout(() => {SendMaintain.delete()}, 5000)
+
+                    return;
+                }
+            }
+        }*/
+
+        /*---------- COOLDOWN SET ----------*/
+        if (!cooldowns.has(command.name)) {
+            cooldowns.set(command.name, new discord.Collection());
+        }
+        const now = Date.now();
+        const timestamps = cooldowns.get(command.name);
+        const cooldownAmount = (command.cooldown || 1) * 1000;
+        
+        if (timestamps.has(message.author.id)) {
+            const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+        
+            if (now < expirationTime) {
+                const timeLeft = (expirationTime - now) / 1000;
+                const SendCooldownMessage = await message.reply(`please wait **${ms((timeLeft.toFixed(1)) * 1000)}** more second(s) before reusing the \`${command.name}\` command again!`);setTimeout(() => {SendCooldownMessage.delete()}, 5000)
+                return message.delete();
+            }
+        }
+        timestamps.set(message.author.id, now);
+        setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+        const TestOnly = (command.testOnly || false);
+        const TestServers = ['761346495194202132', '740307260823044139']
+        if (TestOnly == true && message.channel.id.includes(TestServers)) {
+            const maintain = new discord.MessageEmbed().setTitle('Closed').setDescription('This bot is currently not public yet, please wait until the bot owner starts the bot! :pray:')
+            return message.channel.send(maintain);
+        }
+
+        if (command.permissions) {
+            const authorPerms = message.channel.permissionsFor(message.author);
+            if (!authorPerms || !authorPerms.has(command.permissions)) {
+                const SendErrorMessage = await message.reply(`you do not have the required permission(s) "**${command.permissions.toString().join(", ").toLowerCase()}**" to use this command`);
+                return setTimeout(() => {SendErrorMessage.delete()}, 5000);
+
+            }
+        }
+
+
+        if (!command) return;
+        if (command) command.run(client, message, args, p);
+        if (command) {
+            if (message.guild.memberCount >= 100) {
+                message.delete()
+            }
+        }
+
+
+
+    }
+
+    const sniff = ['*Sniffs~*, someone said my name?', ':eyes:, someone talked about me?', ':eyes:', 'Sleeping... No time to talk... :sleeping: ']
+    var randomSniff = Math.floor(Math.random()*sniff.length) + 1;
+    if (message.content.includes('lou')||message.content.includes('Lou')) {const SendHuh = await message.channel.send(sniff[randomSniff]);setTimeout(() => {SendHuh.delete()}, 3000)}
+    if (args) {
+        args.forEach(a => {
+            if (a.startsWith('<') && a.endsWith('>') && a.length >=3 && !message.mentions.size && !/<:(a-zA-Z0-9_-):(\d)>/) {
+                message.channel.send(message.replace(/</gi, '').replace(/>/gi, ''))
+            }
+        })
+    }
+
+    /*---------- PING FUNCTION ----------*/
+    if (message.mentions.users.has('790504650909417482')) {
+        if (pingedRecently.has(message.author.id)) {
+            return;
+        } else {
+            const A = new discord.MessageEmbed()
+                .setTitle('Uncle Lou is here for you!')
+                .setDescription(`Here are some informations that may help you out!`)
+                .addFields(
+                    {name: "**bot & server stats:**", value: `*Here is some information that may help you out*`, inline: false},
+                    {name: "local prefix:", value: `\`${p}\``, inline: true},
+                    {name: "guilds:", value: `\`${client.guilds.cache.size}\``, inline: true},
+                    {name: "members:", value: `\`${client.users.cache.size}\``, inline: true},
+                    {name: "**Useful commands:**", value: `*Here are some useful commands you should know*`, inline: false},
+                    {name: `\`${p}help\``, value: "Get a list of all commands"},
+                    {name: `\`${p}support\``, value: "Get contact to the Lou HQ"}
+                );
+            message.delete();
+            const Send001 = await message.channel.send(A);
+            setTimeout(() => {Send001.delete()}, 5000)
+            
+
+            // Adds the user to the set so that they can't talk for a minute
+            pingedRecently.add(message.author.id);
+            setTimeout(() => {
+            // Removes the user from the set after a minute
+            pingedRecently.delete(message.author.id);
+            }, 30000);
         }
     }
 });
-
 
 client.login(token);
 

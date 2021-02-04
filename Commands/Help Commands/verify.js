@@ -10,7 +10,7 @@ const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YT
 
 module.exports = {
     name: "verify",
-    description: "DESCRIPTION",
+    description: "verify",
     category: "CATEGORY",
     usage: "",
     run: async (client, message, args) => {
