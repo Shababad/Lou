@@ -4,7 +4,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "settings",
-    description: "View the settings for this server",
+    description: "View the settings of this server",
     category: "Help Command",
     usage: "settings",
     example: "settings",

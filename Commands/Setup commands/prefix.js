@@ -4,7 +4,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "prefix",
-    description: "Set the prefix of a server",
+    description: "Set a custom prefix for the server",
     category: "Setup Commands",
     usage: "prefix set <prefix>",
     example: "prefix set ?",

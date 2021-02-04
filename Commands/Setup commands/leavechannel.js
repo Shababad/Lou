@@ -4,7 +4,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "leavechannel",
-    description: "Set a Leave-Channel for a server",
+    description: "Set a Leave-Channel for a server, Leave-Messages will be sent there when user leaves",
     category: "Setup Commands",
     usage: "leavechannel set <#channel>",
     example: "leavechannel set #bye-bye",

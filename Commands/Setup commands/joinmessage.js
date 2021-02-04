@@ -4,7 +4,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "joinmessage",
-    description: "Set a join message for a server",
+    description: "Set a Join-Message for a server, will be sent to the Join-Channel when new user joins",
     category: "Setup Command",
     usage: "joinmessage <settitle/setdesc...> <Text here>",
     example: "joinmessage setdesc Welcome {user} to this server!",

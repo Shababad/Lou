@@ -4,7 +4,7 @@ const db = new Database("mongodb+srv://Shababad:actx3819@cluster0.v4hao.mongodb.
 
 module.exports = {
     name: "leavemessage",
-    description: "Set a leave message for a server",
+    description: "Set a leave message for a server, will be sent to Leave-Channel when user leaves",
     category: "Setup Command",
     usage: "leavemessage settitle <Text here>",
     example: "leavemessage setdesc Bye bye {user}, cries~",
