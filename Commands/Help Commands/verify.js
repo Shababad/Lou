@@ -7,93 +7,53 @@ const client2 = new BSClient("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YT
     cache: true, // default is true
     cacheOptions: undefined // options for node-cache, default is undefined.
 });
+const data = require('quick.db');
 
 module.exports = {
     name: "verify",
     description: "verify",
     category: "CATEGORY",
     usage: "",
-    run: async (client, message, args) => {
-        const vchannel = await db.get(`${message.guild.id}.vchannel`)
-        const role1 = await db.get(`${message.guild.id}.vrole1`)
-        const role2 = await db.get(`${message.guild.id}.vrole2`)
-        const PTag = await db.get(`${message.author.id}.tag`)
-        const vname = await db.get(`${message.guild.id}.vname`)
+    run: async (client, message, args, p) => {
+        const vchannel = await db.get(`${message.guild.id}.vchannel`);
+        const role1 = await db.get(`${message.guild.id}.vrole1`);
+        const role2 = await db.get(`${message.guild.id}.vrole2`);
+        const PTag = await db.get(`${message.author.id}.tag`);
+        const vname = await db.get(`${message.guild.id}.vname`);
+        const filter = m => m.author == message.author;
+        if (args[0] == 'setup') {
+            if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have the required to use this command!');
+            message.channel.send(`**Hello ${message.author.user.username}, I am going to start off with some questions.**\nType \`cancel\` to cancel the action and skip to skip your current question`)
+            async function f1() {
 
-        if (!args[0]) {
-            if (vchannel == null) {
-                return;
             }
-            else {
-                if(message.channel.id !== vchannel) {
-                    message.channel.send(`This is not a proper channel to verify, Please go to <#${vchannel}>`)
-                }
-                else {
-                    if (vchannel !== null&&role1 !== null&&role2 !== null) {
-                        if (!message.member.roles.cache.has(role1)) {
-                            const send = await message.channel.send('You are already verified!')
-                            if (message.member.roles.cache.has(role2)) {
-                                return;
-                            } else {
-                                message.member.roles.add(role2)
-                            }
-                        }
-                        else {
-                            if (PTag !== null) {
-                                const Player = client2.getPlayer(PTag.toUpperCase()).catch(err => {
-                                    const filter = m => m.author == message.author;
-                                    const collector = message.channel.createMessageCollector(filter);
-
-                                    collector.on('collect', async m => {
-                                        const Player = client2.getPlayer(args[0].toUpperCase()).catch(err => message.channel.send('Player not found'))
-                                        collector.stop()
-                                        message.channel.send(`Saved you as '**${(await Player).name}**'`).then(collector.stop()).then(db.set(`${message.author.id}.tag`, args[0].toUpperCase()))
-                                        message.member.roles.remove(role1).then(message.member.roles.add(role2))
-                                    })
-                                })
-                                message.channel.send(`Verified you as '**${(await Player).name}**'`);
-                                message.member.roles.remove(role1).then(message.member.roles.add(role2));
-                            } else {
-                                message.channel.send('**What is your Brawl Stars tag?**\nExample: #8P8R8QOLP\nType `cancel` to cancel the verification')
-                                const filter = m => m.author == message.author;
-                                const collector = message.channel.createMessageCollector(filter);
-
-                                collector.on('collect', async m => {
-                                    if (m.content == "cancel") {
-                                        collector.stop()
-                                        message.channel.send('Action canceled! No verify role you you :eyes:')
-
-                                    } else {
-                                        const Player = client2.getPlayer(m.content.toUpperCase()).catch(err => message.channel.send('Player not found, please try again'))
-                                        collector.stop()
-                                        message.channel.send(`Saved you as '**${(await Player).name}**'`).then(db.set(`${message.author.id}.tag`, m.content.toUpperCase()));
-                                        message.member.roles.remove(role1).then(message.member.roles.add(role2));
-                                        if (vname !== null) {
-                                            const trophies = millify((await Player).trophies, {precision: 1})
-                                            const vnameX = vname.replace(/{bs.name}/gi, (await Player).name).replace(/{bs.trophies}/gi, trophies).replace(/{bs.club}/gi, (await Player).club.name).replace(/{bs.tag}/gi, m.content).replace(/{user}/gi, message.author.username).replace(/{user.tag}/gi, message.author.tag).replace(/{user.discriminator}/gi, message.author.discriminator)
-                                            message.member.setNickname(vnameX)
-                                        } else {
-                                            return;
-                                        }
-
-                                    }
-                                })
-                            }
-                        }
+            async function f() {
+                const A = new discord.MessageEmbed()
+                    .setTitle('**1. Which channel do you want to set as the verify channel?**')
+                    .setDescription('Answer with a channel to set the mentioned channel as the verify channel,\n\`none\` to set the verify channel as **any**\nExample\`\`\`#verify-here\`\`\`\n*Enabling a verify channel will only allow users to verify in that channel*')
+                setTimeout(() => {message.channel.send(A)}, 2000);
+                const collector = message.channel.createMessageCollector(filter);
+                collector.on('collect', m => {
+                    if (m.content == 'cancel') {
+                        collector.stop()
+                        return;
+                    } else if (m.content == 'skip') {
+                        collector.stop()
+                        f1()
+                    } else if (m.content == "none") {
+                        data.set(`${message.guild.id}.vchannel`, 'any')
+                        collector.stop()
+                        f1()
+                    } else if (m.mentions.channels.first) {
+                        data.set(`${message.guild.id}.vchannel`, m.mentions.channels.first().id)
+                        collector.stop()
+                        f1()
+                    } else {
+                        message.channel.send(`${m.content} is not valid, please try again`)
                     }
-                }
+                })
             }
-        } else if (args[0]) {
-            if (!message.member.hasPermission('MANAGE_GUILD')) {
-                return;
-            } else {
-                if (args[0] == 'disable') {
-                    db.set(`${message.guild.id}.vchannel`, null)
-                    db.set(`${message.guild.id}.vrole1`, null)
-                    db.set(`${message.guild.id}.vrole2`, null)
-                    message.channel.send('Successfully ')
-                }
-            }
+            f()
         }
     }
 }
