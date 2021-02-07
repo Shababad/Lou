@@ -83,9 +83,6 @@ client.on("message", async (message) => {
     /* PREFIX */ let p; let prefixes = await db.fetch(`${message.guild.id}.prefix`); if (prefixes == null) { p = "!" } else { p = prefixes }
     /* ARGS */ const args = message.content.slice(p.length).trim().split(/ +/g);
 
-    if (message.author.id == '790504650909417482') {
-        setTimeout(() => {message.delete()}, 10000);
-    }   
     if (message.author.id == '790504650909417482') return;
     if (message.author.bot) return;
     if (!message.guild) return;
@@ -98,7 +95,7 @@ client.on("message", async (message) => {
 
         if (cmd.length === 0) return;
         const command = client.commands.get(cmd) || client.commands.find(c => c.aliases && c.aliases.includes(cmd));
-        /*if (command) {
+        if (command) {
             if (message.guild.id !== '761346495194202132' && message.guild.id !== '740307260823044139') {
                 if (warnedRecently.has(message.author.id)) {
                     message.delete();
@@ -116,7 +113,7 @@ client.on("message", async (message) => {
                     return;
                 }
             }
-        }*/
+        }
 
         /*---------- COOLDOWN SET ----------*/
         if (!cooldowns.has(command.name)) {
@@ -157,11 +154,6 @@ client.on("message", async (message) => {
 
         if (!command) return;
         if (command) command.run(client, message, args, p);
-        if (command) {
-            if (message.guild.memberCount >= 100) {
-                message.delete()
-            }
-        }
 
 
 
