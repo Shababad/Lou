@@ -22,12 +22,12 @@ module.exports = {
         const vname = await db.get(`${message.guild.id}.vname`);
         const filter = m => m.author == message.author;
         if (args[0] == 'setup') {
-            if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have the required to use this command!');
+    
             message.channel.send(`**Hello ${message.author.user.username}, I am going to start off with some questions.**\nType \`cancel\` to cancel the action and skip to skip your current question`)
-            async function f1() {
+            async function f2() {
 
             }
-            async function f() {
+            async function f1() {
                 const A = new discord.MessageEmbed()
                     .setTitle('**1. Which channel do you want to set as the verify channel?**')
                     .setDescription('Answer with a channel to set the mentioned channel as the verify channel,\n\`none\` to set the verify channel as **any**\nExample\`\`\`#verify-here\`\`\`\n*Enabling a verify channel will only allow users to verify in that channel*')
@@ -52,6 +52,10 @@ module.exports = {
                         message.channel.send(`${m.content} is not valid, please try again`)
                     }
                 })
+            }
+            async function f() {
+                if (!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send('You don\'t have the required to use this command!');
+                
             }
             f()
         }

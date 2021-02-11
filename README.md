@@ -1,4 +1,5 @@
-# Lou
+# Lou [ALPHA]
+Lou is a simple-to-use discord bot. He offers
 
 ### Commands 
 ##### \<Required>; [Optional]

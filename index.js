@@ -29,6 +29,7 @@ const pingedRecently = new Set();
 const talkedRecently = new Set();
 const warnedRecently = new Set();
 const cooldowns = new discord.Collection();
+const { search } = require('djsdocs-generator')
 
 
 client.commands = new Collection();;
@@ -53,6 +54,8 @@ fs.readdir("./events/", (err, files) => {
   
 
 client.once("ready", async () => {
+    const body = await search(undefined, 'guild')
+    client.channels.cache.get('761346495194202135').send({ embed: body });
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
@@ -80,7 +83,7 @@ client.once("ready", async () => {
 
 client.on("message", async (message) => {
 
-    /* PREFIX */ let p; let prefixes = await db.fetch(`${message.guild.id}.prefix`); if (prefixes == null) { p = "!" } else { p = prefixes }
+    /* PREFIX */ let prefixes = await db.fetch(`${message.guild.id}.prefix`); let p = prefixes || "!";
     /* ARGS */ const args = message.content.slice(p.length).trim().split(/ +/g);
 
     if (message.author.id == '790504650909417482') return;
