@@ -29,7 +29,6 @@ const pingedRecently = new Set();
 const talkedRecently = new Set();
 const warnedRecently = new Set();
 const cooldowns = new discord.Collection();
-const { search } = require('djsdocs-generator')
 
 
 client.commands = new Collection();;
@@ -54,8 +53,6 @@ fs.readdir("./events/", (err, files) => {
   
 
 client.once("ready", async () => {
-    const body = await search(undefined, 'guild')
-    client.channels.cache.get('761346495194202135').send({ embed: body });
     db.add(`bot.restarts`, 1)
     const restartvalue = await db.get(`bot.restarts`)
     
